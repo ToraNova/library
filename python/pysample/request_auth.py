@@ -30,7 +30,7 @@ if __name__ == "__main__":
     https_auth_obj = HTTPBasicAuth("1161300548",passw)
 
     #sending the request
-    reply = requests.get( https_url_format.format(host_domain_name,request_port_num),auth = https_auth_obj)
+    reply = requests.get( https_url_format.format(host_domain_name,https_req_portnm),auth = https_auth_obj)
 
     #printing the replies
     print(reply.status_code)
