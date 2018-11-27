@@ -1,3 +1,5 @@
-#This is a repo used to store some useful libraries or samples
+# Lib ToraNova
 
-###Currently supports python only
+### This repo is used to store some useful modules and samples.
+
+### Currently supports python only
