@@ -18,7 +18,6 @@ def on_message(client, userdata, msg):
 
 #actual script usage code
 if __name__ == "__main__":
-
     #user interface to obtain some important params
     print("Enter mqtt broker address",end=":")
     hostaddr = input()
