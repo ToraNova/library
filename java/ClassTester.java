@@ -1,12 +1,17 @@
 
-import MMLSutil.MMLS_get;
+
+import mmls.MMLSclient;
+import java.io.Console;
 
 public class ClassTester{
+  public static Console testconsole = System.console();
 
   public static void main(String [] args){
-		System.out.println("Hello World");
-    MMLS_get mmls0 = new MMLS_get("1161302021");
+    String sid = "1161300548";
+    String pw = new String(testconsole.readPassword("Please enter password for %s: ",sid));
+    MMLSclient mmls0 = new MMLSclient(sid,pw);
     //String sid = mmls0.getSid();
-    mmls0.printSid();
+    mmls0.testFunc();
+
 	}
 };
