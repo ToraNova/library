@@ -31,6 +31,8 @@ public class MMLSclient{
   private static final String url_mmls_main = "https://mmls.mmu.edu.my/";
   private static final String url_mmls_check = "https://mmls.mmu.edu.my/checklogin";
   private static final String url_mmls_home = "https://mmls.mmu.edu.my/home";
+  private static final String url_mmls_attn = "https://mmls.mmu.edu.my/attendance:%s:%s:%s";
+  private static final String url_mmls_atlg = "https://mmls/mmu.edu.my/attendancelogin";
   //private static final String url_mmls_check = "http://127.0.0.1:8000";
   private String stud_id;
   private String stud_pw;
@@ -54,6 +56,13 @@ public class MMLSclient{
     catch (Exception e){
       e.printStackTrace();
     }
+  }
+
+  private Connection signClass(String course_id, String coord_id, String class_id){
+    //attempts to sign for a class
+    String sign_url =url_mmls_attn.format(course_id,coord_id,class_id);
+    Connection initial = Jsoup.connect(sign_url);
+    Connection login = Jsoup.connect(sign_url);
   }
 
   private Connection login(){
