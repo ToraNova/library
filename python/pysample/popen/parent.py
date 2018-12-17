@@ -16,5 +16,3 @@ if __name__ == "__main__":
 			print("Exception has occurred:",str(e))
 			out,err = childproc.communicate()
 			print("STDOUT:",out,"/ STDERR:",err)
-			
-
