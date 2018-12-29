@@ -1,0 +1,4 @@
+# This is a Python type gitignore
+*.pyc
+/__pycache__
+/captures
