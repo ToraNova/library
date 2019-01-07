@@ -1,10 +1,9 @@
-
+package mmls;
 //A MMLSpost object
 
 public class MMLSpost{
 
   //concerned fields
-  private String ctitle;
   private String ptitle;
   private String content;
   private String author;
@@ -13,20 +12,25 @@ public class MMLSpost{
 
   public MMLSpost(){
     //default constructor
+    //avoid using this constructor
   }
 
+  //important POST informations :
+  /*
+  title,author,date
+  content
+  */
   public MMLSpost(String a_title,String a_content,
-                  String a_author,String a_date,String a_link){
-    title = a_title;
+                  String a_author,String a_date){
+    ptitle = a_title;
     content = a_content;
     author = a_author;
     date = a_date;
-    link = a_link;
   }
 
   //getters
   public String getTitle(){
-    return title;
+    return ptitle;
   }
 
   public String getContent(){
@@ -39,10 +43,6 @@ public class MMLSpost{
 
   public String getDate(){
     return date;
-  }
-
-  public String getLink(){
-    return link;
   }
 
 }
