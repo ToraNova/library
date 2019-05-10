@@ -1,0 +1,10 @@
+build/*
+__pycache__/*
+/*.o 
+/*.so 
+*.pyc 
+*.swp
+/*.c 
+/*.cxx 
+/*.py
+ctest

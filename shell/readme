@@ -1,0 +1,32 @@
+This directory provides basic scripting files and also some information
+
+list of binaries that is necessary for scripting
+
+chmod u+x scriptname
+allows a script to be executed
+
+list of other utilities to expand scripting capabilities
+rc.local
+crontab or cron
+
+----------------------------------------------------------------------------------
+known issues
+----------------------------------------------------------------------------------
+1.EOL issue on ^M
+when editing a file in dos, and attempting to run it in linux
+the following trouble will occur:
+
+/usr/bin/blabla^M: bad interpreter
+
+this indicate the EOL used is incompatible
+
+one can call upon the program dos2unix to convert the file back to
+unix compatible format
+
+dos2unix <filename>
+
+and subsequently launching it again
+./<filename>.ext
+
+this will solve the issue
+---------------------------------------------------------------------------------

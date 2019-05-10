@@ -1,0 +1,12 @@
+bin/*
+!bin/.gitkeep
+
+include/*
+!include/.gitkeep
+
+lib/*
+!lib/.gitkeep
+
+build/*
+
+

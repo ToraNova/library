@@ -1,0 +1,13 @@
+This directory stores some crontab backups.
+
+they can be done by doing the following
+%crontab -l > $(date +%y-%m-%d-bak.crontab)
+
+alternatively, call the script
+%./crontab-bak.sh
+
+checkout
+https://crontab.guru/examples.html
+
+cronlogging information
+sudo grep CRON /var/log/syslog

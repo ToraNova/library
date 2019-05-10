@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#the command shows the list of installed apt-packages
+#sorted by their size
+
+dpkg-query -W --showformat='${Installed-Size;10}\t${Package}\n' | sort -k1,1n

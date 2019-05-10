@@ -1,0 +1,11 @@
+This is the template module format
+use this for include more modules
+
+Each codebase in a module should ideally consist
+of 2 parts, the cpp and the hpp. both of these
+are the basis for the cplusplus library.
+
+the rest, we can extend our support to C projects
+by adding a .h and a .c wrapper to "wrap" the cpp
+as a c file. This way, our library will support
+the two languages.

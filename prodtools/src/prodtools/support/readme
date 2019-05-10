@@ -1,0 +1,5 @@
+Contains codebase for supporting functions
+arrayutil -- array functions (doubles/ integers/ chars)
+print   -- printing aids
+turegex -- regular expressions
+convert -- conversion functions

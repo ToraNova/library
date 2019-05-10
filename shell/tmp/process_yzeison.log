@@ -1,0 +1,65 @@
+yzeison   1484     1  0 11:18 ?        00:00:00 /lib/systemd/systemd --user
+yzeison   1485  1484  0 11:18 ?        00:00:00 (sd-pam)
+yzeison   1490     1  0 11:18 ?        00:00:00 /usr/bin/gnome-keyring-daemon --daemonize --login
+yzeison   1571  1492  0 11:18 ?        00:00:00 dbus-daemon --fork --session --address=unix:abstract=/tmp/dbus-5TFHD5GSMX
+yzeison   1583  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/hud/window-stack-bridge
+yzeison   1603  1492  0 11:18 ?        00:00:01 /usr/bin/ibus-daemon --daemonize --xim --address unix:tmpdir=/tmp/ibus
+yzeison   1611  1492  0 11:18 ?        00:00:00 /usr/lib/gvfs/gvfsd
+yzeison   1616  1492  0 11:18 ?        00:00:00 /usr/lib/gvfs/gvfsd-fuse /run/user/1000/gvfs -f -o big_writes
+yzeison   1625  1603  0 11:18 ?        00:00:00 /usr/lib/ibus/ibus-dconf
+yzeison   1626  1603  0 11:18 ?        00:00:00 /usr/lib/ibus/ibus-ui-gtk3
+yzeison   1628  1492  0 11:18 ?        00:00:00 /usr/lib/ibus/ibus-x11 --kill-daemon
+yzeison   1644  1603  0 11:18 ?        00:00:00 /usr/lib/ibus/ibus-engine-simple
+yzeison   1670  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/bamf/bamfdaemon
+yzeison   1691  1492  0 11:18 ?        00:00:00 gpg-agent --homedir /home/yzeison/.gnupg --use-standard-socket --daemon
+yzeison   1701  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/hud/hud-service
+yzeison   1703  1492  0 11:18 ?        00:00:00 /usr/lib/unity-settings-daemon/unity-settings-daemon
+yzeison   1707  1492  0 11:18 ?        00:00:00 /usr/lib/at-spi2-core/at-spi-bus-launcher --launch-immediately
+yzeison   1710  1492  0 11:18 ?        00:00:00 /usr/lib/gnome-session/gnome-session-binary --session=ubuntu
+yzeison   1718  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/unity/unity-panel-service
+yzeison   1719  1707  0 11:18 ?        00:00:00 /usr/bin/dbus-daemon --config-file=/etc/at-spi2/accessibility.conf --nofork --print-address 3
+yzeison   1726  1492  0 11:18 ?        00:00:00 /usr/lib/at-spi2-core/at-spi2-registryd --use-gnome-session
+yzeison   1821  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/indicator-messages/indicator-messages-service
+yzeison   1823  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/indicator-bluetooth/indicator-bluetooth-service
+yzeison   1834  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/indicator-power/indicator-power-service
+yzeison   1836  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/indicator-datetime/indicator-datetime-service
+yzeison   1837  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/indicator-keyboard/indicator-keyboard-service --use-gtk
+yzeison   1838  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/indicator-sound/indicator-sound-service
+yzeison   1841  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/indicator-printers/indicator-printers-service
+yzeison   1842  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/indicator-session/indicator-session-service
+yzeison   1857  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/indicator-application/indicator-application-service
+yzeison   1888  1492  0 11:18 ?        00:00:00 /usr/bin/pulseaudio --start --log-target=syslog
+yzeison   1898  1492  0 11:18 ?        00:00:00 /usr/lib/evolution/evolution-source-registry
+yzeison   1900  1492  0 11:18 ?        00:00:00 /usr/lib/dconf/dconf-service
+yzeison   1942  1492  0 11:18 ?        00:00:00 /usr/lib/evolution/evolution-calendar-factory
+yzeison   1945  1492  3 11:18 ?        00:00:42 compiz
+yzeison   1956  1942  0 11:18 ?        00:00:00 /usr/lib/evolution/evolution-calendar-factory-subprocess --factory contacts --bus-name org.gnome.evolution.dataserver.Subprocess.Backend.Calendarx1942x2 --own-path /org/gnome/evolution/dataserver/Subprocess/Backend/Calendar/1942/2
+yzeison   1966  1492  0 11:18 ?        00:00:00 /usr/lib/evolution/evolution-addressbook-factory
+yzeison   1968  1942  0 11:18 ?        00:00:00 /usr/lib/evolution/evolution-calendar-factory-subprocess --factory local --bus-name org.gnome.evolution.dataserver.Subprocess.Backend.Calendarx1942x3 --own-path /org/gnome/evolution/dataserver/Subprocess/Backend/Calendar/1942/3
+yzeison   1975  1966  0 11:18 ?        00:00:00 /usr/lib/evolution/evolution-addressbook-factory-subprocess --factory local --bus-name org.gnome.evolution.dataserver.Subprocess.Backend.AddressBookx1966x2 --own-path /org/gnome/evolution/dataserver/Subprocess/Backend/AddressBook/1966/2
+yzeison   1996  1710  0 11:18 ?        00:00:02 nautilus -n
+yzeison   2000  1710  0 11:18 ?        00:00:03 /usr/bin/gnome-software --gapplication-service
+yzeison   2001  1710  0 11:18 ?        00:00:01 nm-applet
+yzeison   2002  1710  0 11:18 ?        00:00:00 /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+yzeison   2010  1710  0 11:18 ?        00:00:00 /usr/lib/unity-settings-daemon/unity-fallback-mount-helper
+yzeison   2027  1492  0 11:18 ?        00:00:00 /usr/lib/gvfs/gvfs-udisks2-volume-monitor
+yzeison   2042  1492  0 11:18 ?        00:00:00 /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
+yzeison   2053  1492  0 11:18 ?        00:00:00 /usr/lib/gvfs/gvfs-goa-volume-monitor
+yzeison   2058  1492  0 11:18 ?        00:00:00 /usr/lib/gvfs/gvfs-afc-volume-monitor
+yzeison   2064  1492  0 11:18 ?        00:00:00 /usr/lib/gvfs/gvfs-mtp-volume-monitor
+yzeison   2099  1492  0 11:18 ?        00:00:00 /usr/lib/gvfs/gvfsd-trash --spawner :1.4 /org/gtk/gvfs/exec_spaw/0
+yzeison   2249  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/notify-osd
+yzeison   2351  1492 10 11:18 ?        00:02:12 /usr/lib/firefox/firefox
+yzeison   2374  1710  0 11:18 ?        00:00:00 zeitgeist-datahub
+yzeison   2381  1492  0 11:18 ?        00:00:00 /bin/sh -c /usr/lib/x86_64-linux-gnu/zeitgeist/zeitgeist-maybe-vacuum; /usr/bin/zeitgeist-daemon
+yzeison   2388  2381  0 11:18 ?        00:00:00 /usr/bin/zeitgeist-daemon
+yzeison   2395  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/zeitgeist-fts
+yzeison   2409  1492  0 11:18 ?        00:00:00 /usr/lib/gvfs/gvfsd-network --spawner :1.4 /org/gtk/gvfs/exec_spaw/2
+yzeison   2522  1492  0 11:18 ?        00:00:00 /usr/lib/gvfs/gvfsd-dnssd --spawner :1.4 /org/gtk/gvfs/exec_spaw/5
+yzeison   2538  1492  0 11:18 ?        00:00:00 /usr/lib/x86_64-linux-gnu/gconf/gconfd-2
+yzeison   2555  1492  0 11:19 ?        00:00:00 /usr/lib/gvfs/gvfsd-metadata
+yzeison   2606  1710  0 11:19 ?        00:00:00 update-notifier
+yzeison   2630  2351 11 11:19 ?        00:02:27 /usr/lib/firefox/firefox -contentproc -childID 2 -isForBrowser -intPrefs 5:50|6:-1|18:0|28:1000|33:20|34:10|43:128|44:10000|49:0|51:400|52:1|53:0|54:0|59:0|60:120|61:120|92:2|93:1|107:5000|118:0|120:0|131:10000|156:24|157:32768|159:0|160:0|168:5|172:1048576|173:100|174:5000|176:600|177:4|178:1|187:2|201:60000| -boolPrefs 1:0|2:0|4:0|26:1|27:1|30:0|35:1|36:0|37:0|38:0|41:1|42:1|45:0|46:0|47:0|48:0|50:0|55:1|56:1|57:0|58:1|62:1|63:1|64:0|65:1|66:1|67:0|68:1|71:0|72:0|75:1|76:1|80:1|81:1|82:1|83:0|84:0|86:0|87:0|88:1|89:0|94:1|95:0|101:0|106:0|109:1|110:0|112:1|113:1|115:1|119:0|121:0|123:0|125:1|126:1|132:0|133:0|134:1|136:0|147:0|154:0|155:0|158:1|161:0|163:1|165:1|166:0|171:0|175:1|180:0|181:0|182:0|183:1|184:0|185:0|186:1|189:1|193:0|194:0|195:1|196:1|197:0|198:1|199:1|200:1|202:0|203:0|205:0|213:1|214:1|215:0|216:0|217:0| -stringPrefs 3:7;release|135:3;1.0|152:332;  ¼½¾ǃː??։֊׃״؉؊٪۔܁܂܃܄ᅟᅠ᜵           ???‐’․‧??????? ‹›⁁⁄⁒ ⅓⅔⅕⅖⅗⅘⅙⅚?⅜⅝⅞⅟∕∶⎮╱⧶⧸⫻⫽⿰⿱⿲⿳⿴⿵⿶⿷⿸⿹⿺⿻　。〔〕〳゠ㅤ㈝㈞㎮㎯㏆㏟꞉︔︕︿﹝﹞?．／｡ﾠ???￼�|153:8;moderate| -greomni /usr/lib/firefox/omni.ja -appomni /usr/lib/firefox/browser/omni.ja -appdir /usr/lib/firefox/browser 2351 true tab
+yzeison   2679  1492  0 11:20 ?        00:00:04 /usr/lib/gnome-terminal/gnome-terminal-server
+yzeison   2686  2679  0 11:20 pts/3    00:00:00 bash
+yzeison   2699  1710  0 11:20 ?        00:00:00 /usr/lib/x86_64-linux-gnu/deja-dup/deja-dup-monitor
