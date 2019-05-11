@@ -49,7 +49,6 @@ LIBS      := \
 	-lprodtools_shared \
 	-lstdc++ 
 
-
 ################################################################################
 # Include declarations
 # In order of lib dir specification
@@ -62,7 +61,6 @@ INC      := \
 	-I$(MKLROOT)/include \
 	-I$(PLSROOT)/include \
 	-I$(PRTROOT)/include \
-
 
 ################################################################################
 # Phony targets
@@ -96,10 +94,9 @@ debug:
 # Cleanup
 .phony: clean
 clean:
-	rm -rf build
 	rm -rf __pycache__
 	rm -f ./*.o ./*.so ./*.pyc 
-	rm -f ./*.c ./*.cxx ./*.py
+	rm -f ./*.c ./*.cxx ./$(PRONAME).py
 	rm -f ctest
 
 ################################################################################
