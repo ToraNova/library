@@ -1,0 +1,9 @@
+/usr/local/lib/python3.6/dist-packages/pyioneer/__init__.py
+/usr/local/lib/python3.6/dist-packages/pyioneer/COPY_template.py
+/usr/local/lib/python3.6/dist-packages/pyioneer/support/pam.py
+/usr/local/lib/python3.6/dist-packages/pyioneer/support/__init__.py
+/usr/local/lib/python3.6/dist-packages/pyioneer/__pycache__/__init__.cpython-36.pyc
+/usr/local/lib/python3.6/dist-packages/pyioneer/__pycache__/COPY_template.cpython-36.pyc
+/usr/local/lib/python3.6/dist-packages/pyioneer/support/__pycache__/pam.cpython-36.pyc
+/usr/local/lib/python3.6/dist-packages/pyioneer/support/__pycache__/__init__.cpython-36.pyc
+/usr/local/lib/python3.6/dist-packages/Pyioneer-1.0.egg-info
