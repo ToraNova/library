@@ -11,8 +11,7 @@ while [ $count -gt 0 ]
 do
 	count=$(( $count - 1 ))
 	purline=$(python3 -c "import site; print(site.getsitepackages()[$count])")/$purgeTar
-	echo "Perform purge on $purline ? (rm -rf $purline)"
-
+	echo "Perform purge on $purline ? (rm -rf $purline) yes/no"
 	read yesno
 	if [ $yesno = "y" ] || [ $yesno = "yes" ]
 	then

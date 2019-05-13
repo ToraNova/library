@@ -21,6 +21,7 @@ __description = "Pyioneer is a library to support rapid python development"
 __modules = [
         'pyioneer',
         'pyioneer.support'
+        'pyioneer.constant'
         ]
 
 ############################################################################## 

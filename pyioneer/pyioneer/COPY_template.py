@@ -13,8 +13,13 @@
 # dependencies import
 from abc import ABC, abstractmethod
 import datetime, inspect
+# local dependencies, only works with setup.py to root the package as a system
+# package. currently uses this ugly hack of sys/os to resolve
+import sys
+sys.path.append( '..' ) # allow imports from the const pkg
+import constant.ansicolor as ansicolor
+import constant.constring as constring
 ################################################################################
-
 
 class Pam(ABC):
     '''Pam - printing assistant module, handles all forms of printing thingy
@@ -27,16 +32,22 @@ class Pam(ABC):
         '''prints the date and the filename and func name of the caller function
         mainly for debugging purposes. use with debugprint()'''
         cfilename, cfuncname = self.callerDetails() #obtain caller details
-        print(self.dateDetails(self.d2fstr),cfilename,cfuncname,*args)
+        print(self.dateDetails(constring.Dateformt.norm_micros),cfilename,cfuncname,*args)
 
     def dprint(self, *args, **kwargs):
         '''prints the date information only. does not include caller and file and
         function name. suitable for verboses'''
-        print(self.dateDetails(self.d2fstr),*args)
+        print(self.dateDetails(constring.Dateformt.norm_micros),*args)
 
     def eprint(self, *args, **kwargs):
         '''error printing function. this prints the text in red'''
-        print(self.ccode_red_seq + self.dateDetails(self.d2fstr), *args, self.ccode_ntext_seq)
+        print(ansicolor.Eseq.defred + self.dateDetails(constring.Dateformt.norm_micros),\
+                *args, ansicolor.Eseq.normtext)
+
+    def wprint(self, *args, **kwargs):
+        '''warning printing function. this prints the text in yellow'''
+        print(ansicolor.Eseq.defyel + self.dateDetails(constring.Dateformt.norm_micros),\
+                *args, ansicolor.Eseq.normtext)
     ################################################################################
         
     ################################################################################
@@ -61,26 +72,24 @@ class Pam(ABC):
     ################################################################################
     # Constructor. use super().__init__( t/f, t/f, t/f ) to change default behavior
     ################################################################################
-    def __init__(self,verbose=True,debug=True,error=True):
+    def __init__(self,verbose=True,debug=True,warn=True,error=True):
         '''use super().__init__() to initialize debugging and verbose mode,
         if super().__init__() is not called, then no debugging or verbose will
         start unless super().tell() or super().verboseonly() is called.'''
         self.verbose = self.dprint if verbose else lambda *a: None
         self.debug = self.pkgprint if debug else lambda *a: None
         self.error = self.eprint if error else lambda *a: None
+        self.warn = self.wprint if warn else lambda *a:None
+
     ################################################################################
     
     ################################################################################
-    # Default setup and internal formatting
+    # Default setup
     ################################################################################
     error = eprint
+    warn = wprint
     verbose = lambda *a: None
     debug = lambda *a: None
-
-    dfstr = "[%Y/%m/%d %a %H:%M:%S]"
-    d2fstr = "[%Y/%m/%d %a %H:%M:%S.%f]"
-    ccode_ntext_seq = "\033[0;37;40m" # use this to go back to normal text
-    ccode_red_seq = "\033[1;31;40m" # preprends this for red texts
     ################################################################################
 
     ################################################################################
@@ -111,6 +120,7 @@ class Pam_Test(Pam):
         self.debug("This is a serious debugging message")
         self.error("An error has occurred?!")
         self.verbose("Nope")
+        self.warn("Warning. Yellow alert!")
         super().shutup()
         self.verbose("this won't come out")
         self.error("Errors are important")
