@@ -5,7 +5,6 @@
 # current the packages are exported directly without the file's intervention
 ############################################################################## 
 
-
 ############################################################################## 
 # METADATA
 ############################################################################## 
@@ -20,8 +19,9 @@ __description = "Pyioneer is a library to support rapid python development"
 ############################################################################## 
 __modules = [
         'pyioneer',
-        'pyioneer.support'
-        'pyioneer.constant'
+        'pyioneer.support',
+        'pyioneer.constant',
+        'pyioneer.variable'
         ]
 
 ############################################################################## 

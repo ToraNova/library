@@ -7,48 +7,22 @@
 # @Author ToraNova
 # @mailto chia_jason96@live.com
 # @version 1.0
+# @date 13 May 2019
 ################################################################################
 
 ################################################################################
 # dependencies import
 from abc import ABC, abstractmethod
 import datetime, inspect
-# local dependencies, only works with setup.py to root the package as a system
-# package. currently uses this ugly hack of sys/os to resolve
-import sys
-sys.path.append( '..' ) # allow imports from the const pkg
-import constant.ansicolor as ansicolor
-import constant.constring as constring
+################################################################################
+# local imports (import as if the library is a sys library)
+from pyioneer.constant import ansicolor, constring
+from pyioneer.support import gpam
 ################################################################################
 
 class Pam(ABC):
     '''Pam - printing assistant module, handles all forms of printing thingy
     to lighten load while developping dem programz'''
-    
-    ################################################################################
-    # Printing implementations
-    ################################################################################
-    def pkgprint(self,*args,**kwargs):
-        '''prints the date and the filename and func name of the caller function
-        mainly for debugging purposes. use with debugprint()'''
-        cfilename, cfuncname = self.callerDetails() #obtain caller details
-        print(self.dateDetails(constring.Dateformt.norm_micros),cfilename,cfuncname,*args)
-
-    def dprint(self, *args, **kwargs):
-        '''prints the date information only. does not include caller and file and
-        function name. suitable for verboses'''
-        print(self.dateDetails(constring.Dateformt.norm_micros),*args)
-
-    def eprint(self, *args, **kwargs):
-        '''error printing function. this prints the text in red'''
-        print(ansicolor.Eseq.defred + self.dateDetails(constring.Dateformt.norm_micros),\
-                *args, ansicolor.Eseq.normtext)
-
-    def wprint(self, *args, **kwargs):
-        '''warning printing function. this prints the text in yellow'''
-        print(ansicolor.Eseq.defyel + self.dateDetails(constring.Dateformt.norm_micros),\
-                *args, ansicolor.Eseq.normtext)
-    ################################################################################
         
     ################################################################################
     # Interface methods (use super().shutup() / tell() or verboseonly() )
@@ -60,12 +34,12 @@ class Pam(ABC):
 
     def tell(self):
         '''allows the base class for verbose and debug printing'''
-        self.verbose = self.dprint
-        self.debug = self.pkgprint
+        self.verbose = gpam.gpam_vprint
+        self.debug   = gpam.gpam_dprint
 
     def verboseonly(self):
         '''only allow verboses'''
-        self.verbose = self.dprint
+        self.verbose = gpam.gpam_vprint
         self.debug = lambda *a: None
     ################################################################################
 
@@ -76,39 +50,22 @@ class Pam(ABC):
         '''use super().__init__() to initialize debugging and verbose mode,
         if super().__init__() is not called, then no debugging or verbose will
         start unless super().tell() or super().verboseonly() is called.'''
-        self.verbose = self.dprint if verbose else lambda *a: None
-        self.debug = self.pkgprint if debug else lambda *a: None
-        self.error = self.eprint if error else lambda *a: None
-        self.warn = self.wprint if warn else lambda *a:None
-
+        self.verbose = gpam.gpam_vprint if verbose else lambda *a: None
+        self.debug   = gpam.gpam_dprint if debug else lambda *a: None
+        self.error   = gpam.gpam_eprint if error else lambda *a: None
+        self.warn    = gpam.gpam_wprint if warn else lambda *a:None
     ################################################################################
     
     ################################################################################
     # Default setup
     ################################################################################
-    error = eprint
-    warn = wprint
+    error = gpam.gpam_eprint
+    warn = gpam.gpam_wprint
     verbose = lambda *a: None
     debug = lambda *a: None
     ################################################################################
 
-    ################################################################################
-    # Macros
-    ################################################################################
-    def dateDetails(self,sformat):
-        #easy datetime macro
-        return datetime.datetime.now().strftime(sformat)
-        
-    def callerDetails(self):
-        #easy caller filename/funcname macro
-        cframe = inspect.stack()[1]
-        module = inspect.getmodule(cframe[0])
-        cfilename = module.__file__
-        cfuncname = cframe.function
-        return cfilename, cfuncname
-    ################################################################################
-
-
+# TODO: Please include a sample use case (for classes)
 # Test class
 class Pam_Test(Pam):
 
@@ -131,9 +88,12 @@ class Pam_Test(Pam):
         self.verbose("verbose")
         self.debug("debug")
 
+# TODO: Please include test scripts
 # Test script
 if __name__ == "__main__":
     
     p = Pam_Test(True,True,True)
     p.test()
+    gpam.disable_gpam()
+    p.test() # disabling gpam is useless eventhough pam uses it
 

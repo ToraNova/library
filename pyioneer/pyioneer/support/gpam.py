@@ -16,13 +16,9 @@
 ################################################################################
 import datetime, inspect
 ################################################################################
-# TODO: Please edit any local dependencies
-# local dependencies, only works with setup.py to root the package as a system
-# package. currently uses this ugly hack of sys/os to resolve
-import sys
-sys.path.append( '..' ) # allow imports from the const pkg
-import constant.ansicolor as ansicolor
-import constant.constring as constring
+# local imports (import as if the library is a sys library)
+from pyioneer.constant import ansicolor, constring
+from pyioneer.support import gpam
 ################################################################################
 
 # Shared with Pam
@@ -59,6 +55,11 @@ def gpam_wprint(*args, **kwargs):
     print(ansicolor.Eseq.defyel + gpam_dateDetails(constring.Dateformt.norm_micros),\
            *args, ansicolor.Eseq.normtext)
 
+# Shared with Pam
+def gpam_rprint(*args, **kwargs):
+    '''raw print function, no dates included, just print rawly'''
+    print(*args)
+
 ################################################################################
 # Default setups
 ################################################################################
@@ -66,6 +67,7 @@ gpam_error = gpam_eprint
 gpam_warn = gpam_wprint
 gpam_verbose = gpam_vprint
 gpam_debug = gpam_dprint
+gpam_raw = gpam_rprint
 
 ################################################################################
 # Macros
@@ -80,16 +82,20 @@ def enable_gpam():
     # this enables the correct gpam function to be mapped
     global gpam_verbose
     global gpam_debug
+    global gpam_raw
     gpam_verbose = gpam_vprint
     gpam_debug   = gpam_dprint
+    gpam_raw = gpam_rprint
 
 def disable_gpam():
     # this disabled, gpam are now mapped to lambda nones
     # gpam_error cannot be disabled. We do not encourage hiding errors
     global gpam_verbose
     global gpam_debug
+    global gpam_raw
     gpam_verbose = lambda *a: None
     gpam_debug = lambda *a: None
+    gpam_raw = lambda *a: None
 
 # Test script
 if __name__ == "__main__":
@@ -101,6 +107,8 @@ if __name__ == "__main__":
     gpam_verbose("silenced")
     gpam_debug("silenced x2")
     gpam_error("can't silence me")
+    gpam_raw("raw test 1")
     enable_gpam()
     gpam_verbose("ok' we're back")
+    gpam_raw("raw test 2")
 

@@ -23,7 +23,6 @@ if __name__ == "__main__":
 					delimiter=delim,quotechar=quotechar,
 					quoting=csv.QUOTE_MINIMAL)
 			for i,rows in enumerate(xda):
-				rows = numpy.append(rows,yc[i])
 				csv_writer.writerow( rows)
 
 	with open('xdb.csv','w') as outfile:
@@ -31,7 +30,6 @@ if __name__ == "__main__":
 					delimiter=delim,quotechar=quotechar,
 					quoting=csv.QUOTE_MINIMAL)
 			for i,rows in enumerate(xdb):
-				rows = numpy.append(rows,yc[i])
 				csv_writer.writerow( rows)
 	
 	
