@@ -1,0 +1,6 @@
+There are 2 sample templates here
+
+loaded_libs is a template for a swig
+that runs with external shared libraries
+
+minimal runs on a python setup script
