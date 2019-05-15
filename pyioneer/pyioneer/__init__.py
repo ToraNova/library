@@ -21,7 +21,9 @@ __modules = [
         'pyioneer',
         'pyioneer.support',
         'pyioneer.constant',
-        'pyioneer.variable'
+        'pyioneer.variable',
+        'pyioneer.network',
+        'pyioneer.network.tcp'
         ]
 
 ############################################################################## 

@@ -20,14 +20,23 @@ from pyioneer.support import lstools
 class DataController(Pam):
     '''basic data controller class'''
 
-    def __init__(self,verbose=False,debug=False):
+    def __init__(self,verbose=False,debug=False,owarn=False):
         '''construct a data controller.'''
         super().__init__(verbose=verbose, debug=debug)
         # The primary data dictionary
         self._mp = {} #empty dictionary during initialization
+        self.__owarn = self.__overwrites_warning \
+                if owarn else lambda *a:None
+
+    def __overwrites_warning(self, dname ):
+        '''remap-able warning function'''
+        if( self.isLoaded(dname)):
+            self.warn(dname,"overwritten onload")
 
     def load(self,dname,dval):
-        '''sets the dname index on the primary dict to dval'''
+        '''sets the dname index on the primary dict to dval,
+        overrides without warning'''
+        self.__owarn(dname)
         self._mp[dname] = dval
 
     def unload(self,dname=None):
@@ -59,23 +68,29 @@ class DataController(Pam):
             return
         self._mp = target
 
-    def display(self,dname=None,showtype=False):
+    def display(self,dname=None,showtype=False,raw=False):
         '''display the contents of dname (simple printing)'''
         if(dname==None):
             #display all
             self.verbose("Displaying all contents")
             for v in self._mp.keys():
-                self.display( v )
+                self.display( v, raw = raw )
         elif( type(dname) == list and len(dname) > 0 ):
             #display all as a list
+            self.verbose("Displaying dnames:",dname)
             for v in dname:
-                self.display( v )
+                self.display( v, raw = raw )
         else:
             #display singular (this section is recursed)
             if( self.isLoaded(dname) ):
-                self.verbose(dname, 
-                    type(self._mp[dname]) if showtype else '',
-                    self._mp[dname])
+                if(raw):
+                    self.raw(dname,
+                        type(self._mp[dname]) if showtype else '',
+                        self._mp[dname])
+                else:
+                    self.verbose(dname, 
+                        type(self._mp[dname]) if showtype else '',
+                        self._mp[dname])
             else:
                 self.warn(dname,"not loaded, cannot be displayed")
 
@@ -108,12 +123,12 @@ class DataController(Pam):
 class HomoCSVDataController(DataController):
     '''csv based data controller, reads and loads csv files, assumes csv file is homogenous
     that is all a single data type (naive)''' 
-    _default_readkey = "__csv_in0"
+    _default_readkey = "__csv"
 
-    def __init__(self,verbose=False,debug=False):
+    def __init__(self,verbose=False,debug=False,owarn=False):
         '''constructs the HomoCSVDC obj.
         @verbose and debug. print verbose and debug'''
-        super().__init__(verbose=verbose,debug=debug)
+        super().__init__(verbose=verbose,debug=debug,owarn=owarn)
 
     def read(self,filename, htype=float, dname=_default_readkey,
             skipc = 0, adelimiter=';', aquotechar ='"'):
@@ -139,8 +154,8 @@ class HomoCSVDataController(DataController):
                     for index,row in enumerate(rin_list):
                         self._mp[dname].append( [htype(i) for i in row] )
         except Exception as e:
-            self.error("Exception has ocurred",str(e))
-            del self._mp[dname]
+            self.expt(str(e))
+            self.unload(dname)
 
     def isRead(self,dname=_default_readkey):
         '''checks if reading is successfuly conducted on the default key'''
@@ -148,7 +163,7 @@ class HomoCSVDataController(DataController):
 
     def showcase(self,dname=_default_readkey):
         '''prints out what the CSV reader has read from the default key'''
-        super().display(dname)
+        self.display(dname)
 
     def size(self,dname=_default_readkey):
         '''returns a tuple of the row,col size of the read in csvfile'''
@@ -161,9 +176,10 @@ class HomoCSVDataController(DataController):
 # Test script
 if __name__ == "__main__":
 
-    dc = DataController(True,True)
-    hc = HomoCSVDataController(True,True)
+    dc = DataController(True,True,True)
+    hc = HomoCSVDataController(True,True,True)
     dc.load('desc','this is a datac')
+    dc.load('desc','overwritten')
     dc.load('test','this is a test')
     dc.a = 1
     print(dc.isLoaded('desc'))
@@ -184,6 +200,8 @@ if __name__ == "__main__":
     print( hc.size()[0])
     dc.display( ['var0','var1'] )
     hc.display( ['test'] )
+
+    print("Test OK for",__file__)
 
 
 

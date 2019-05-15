@@ -18,56 +18,68 @@ import datetime, inspect
 ################################################################################
 # local imports (import as if the library is a sys library)
 from pyioneer.constant import ansicolor, constring
-from pyioneer.support import gpam
 ################################################################################
 
-# Shared with Pam
-def gpam_dprint(*args,**kwargs):
-    '''prints the date and the filename and func name of the caller function
-    mainly for debugging purposes. use with debugprint()'''
-    cframe = inspect.stack()[1]
-    module = inspect.getmodule(cframe[0])
-    cfilename = module.__file__
-    cfuncname = cframe.function
-    cdetails = "{}/func({}):".format(cfilename,cfuncname)
-    print(gpam_dateDetails(constring.Dateformt.norm_micros),cdetails,*args)
+'''the general global printing assistant module (PAM) functions
+may supply any amount of arguments, set df to the date format.
+if df is not a string, then date printing is disabled'''
 
 # Shared with Pam
-def gpam_vprint(*args, **kwargs):
-    '''prints the date information only. does not include caller and file and
-    function name. suitable for verboses'''
-    print(gpam_dateDetails(constring.Dateformt.norm_micros),*args)
-
-# Shared with Pam
-def gpam_eprint(*args, **kwargs):
-    '''error printing function. this prints the text in red'''
-    cframe = inspect.stack()[1]
-    module = inspect.getmodule(cframe[0])
-    cfilename = module.__file__
-    cfuncname = cframe.function
-    cdetails = "{}/func({}):".format(cfilename,cfuncname)
-    print(ansicolor.Eseq.defred + gpam_dateDetails(constring.Dateformt.norm_micros),\
-            cdetails, *args, ansicolor.Eseq.normtext)
-
-# Shared with Pam
-def gpam_wprint(*args, **kwargs):
-    '''warning printing function. this prints the text in yellow'''
-    print(ansicolor.Eseq.defyel + gpam_dateDetails(constring.Dateformt.norm_micros),\
-           *args, ansicolor.Eseq.normtext)
-
-# Shared with Pam
-def gpam_rprint(*args, **kwargs):
+def rprint(*args, **kwargs):
     '''raw print function, no dates included, just print rawly'''
     print(*args)
+
+# Shared with Pam
+def dprint(*args, df=constring.Dateformt.norm_micros, **kwargs):
+    '''prints the date and the filename and func name of the caller function
+    mainly for debugging purposes. use with debugprint()'''
+    cstack = inspect.stack()
+    cdetails = gpam_stackDetails( cstack )
+    print(gpam_dateDetails(df),*args, cdetails)
+
+# Shared with Pam
+def vprint(*args,cs=ansicolor.Eseq.normtext,df=constring.Dateformt.norm_micros, **kwargs):
+    '''prints the date information only. does not include caller and file and
+    function name. suitable for verboses, change cs to other colors to enable 
+    colored printing'''
+    print(cs+gpam_dateDetails(df),*args,ansicolor.Eseq.normtext)
+
+# Shared with Pam
+def eprint(*args, df=constring.Dateformt.norm_micros, **kwargs):
+    '''error printing function. this prints the text in red'''
+    cstack = inspect.stack()
+    cdetails = gpam_stackDetails( cstack )
+    print(ansicolor.Eseq.defred+gpam_dateDetails(df),\
+             *args, cdetails, ansicolor.Eseq.normtext)
+
+# Shared with Pam
+def wprint(*args, df=constring.Dateformt.norm_micros, **kwargs):
+    '''warning printing function. this prints the text in yellow'''
+    vprint( *args, cs=ansicolor.Eseq.defyel, df=df)
+
+# Shared with Pam
+def iprint(*args, df=constring.Dateformt.norm_micros, **kwargs):
+    '''info print, this is printed as a different color to highlight details'''
+    vprint( *args, cs=ansicolor.Eseq.defcya, df=df)
+
+# Shared with Pam
+def exprint(*args, df=constring.Dateformt.norm_micros, **kwargs):
+    '''prints the args, but with prepended Exception has occurred'''
+    cstack = inspect.stack()
+    cdetails = gpam_stackDetails( cstack )
+    print(ansicolor.Eseq.bolred+gpam_dateDetails(df),"Exception has occurred.",\
+            *args, cdetails, ansicolor.Eseq.normtext)
 
 ################################################################################
 # Default setups
 ################################################################################
-gpam_error = gpam_eprint
-gpam_warn = gpam_wprint
-gpam_verbose = gpam_vprint
-gpam_debug = gpam_dprint
-gpam_raw = gpam_rprint
+error   = eprint
+warn    = wprint
+verbose = vprint
+debug   = dprint
+raw     = rprint
+info    = iprint
+expt    = exprint
 
 ################################################################################
 # Macros
@@ -75,40 +87,54 @@ gpam_raw = gpam_rprint
 def gpam_dateDetails(sformat):
     #easy datetime macro
     return datetime.datetime.now().strftime(sformat)
+
+def gpam_stackDetails( stack ):
+    ind = 1
+    module = inspect.getmodule(stack[ind])
+    cfilename = stack[ind].filename
+    cfuncname = stack[ind].function
+    cfuncline = stack[ind].lineno
+    sdetails = "file:{} func({}, line={})".format(cfilename,cfuncname,\
+            cfuncline)
+    return sdetails
     
 ################################################################################
 
 def enable_gpam():
     # this enables the correct gpam function to be mapped
-    global gpam_verbose
-    global gpam_debug
-    global gpam_raw
-    gpam_verbose = gpam_vprint
-    gpam_debug   = gpam_dprint
-    gpam_raw = gpam_rprint
+    global verbose
+    global debug
+    global raw
+    global info
+    verbose = vprint
+    debug   = dprint
+    raw     = rprint
+    info    = iprint
 
 def disable_gpam():
     # this disabled, gpam are now mapped to lambda nones
     # gpam_error cannot be disabled. We do not encourage hiding errors
-    global gpam_verbose
-    global gpam_debug
-    global gpam_raw
-    gpam_verbose = lambda *a: None
-    gpam_debug = lambda *a: None
-    gpam_raw = lambda *a: None
+    global verbose
+    global debug
+    global raw
+    global info
+    verbose = lambda *a: None
+    debug   = lambda *a: None
+    raw     = lambda *a: None
+    info    = lambda *a: None
 
 # Test script
 if __name__ == "__main__":
     
-    gpam_warn("Warning")
-    gpam_error("to err is human")
-    gpam_verbose("verbose is enabled by default")
+    warn("Warning")
+    error("to err is human")
+    verbose("verbose is enabled by default")
     disable_gpam()
-    gpam_verbose("silenced")
-    gpam_debug("silenced x2")
-    gpam_error("can't silence me")
-    gpam_raw("raw test 1")
+    verbose("silenced")
+    debug("silenced x2")
+    error("can't silence me")
+    raw("raw test 1")
     enable_gpam()
-    gpam_verbose("ok' we're back")
-    gpam_raw("raw test 2")
+    verbose("ok' we're back",df=constring.Dateformt.norm)
+    raw("raw test 2")
 

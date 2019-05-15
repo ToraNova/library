@@ -37,10 +37,13 @@ class Eseq:
     defblu = "\033[0;34m"        # bright blue
     defmag = "\033[0;35m"        # bright magenta
     defcya = "\033[0;36m"        # bright cyan
-    defwht = "\033[0;37m"       # use this to go back to normal text
+    defwht = "\033[0;37m"        # use this to go back to normal text
 
-    purred = "\033[1;31;40m"    # pure red ?
-    purgrn = "\033[1;32;40m"    # pure green ?
+    bolred = "\033[1;31m"        # bold red
+    bolgrn = "\033[1;32m"        # bold green
+
+    whtred = "\033[1;31;40m"    # pure red ?
+    whtgrn = "\033[1;32;40m"    # pure green ?
 
 
 # Test script
