@@ -34,22 +34,22 @@ def dprint(*args, df=constring.Dateformt.norm_micros, **kwargs):
     '''prints the date and the filename and func name of the caller function
     mainly for debugging purposes. use with debugprint()'''
     cstack = inspect.stack()
-    cdetails = gpam_stackDetails( cstack )
-    print(gpam_dateDetails(df),*args, cdetails)
+    cdetails = __stackDetails( cstack )
+    print(__dateDetails(df),*args, cdetails)
 
 # Shared with Pam
 def vprint(*args,cs=ansicolor.Eseq.normtext,df=constring.Dateformt.norm_micros, **kwargs):
     '''prints the date information only. does not include caller and file and
     function name. suitable for verboses, change cs to other colors to enable 
     colored printing'''
-    print(cs+gpam_dateDetails(df),*args,ansicolor.Eseq.normtext)
+    print(cs+__dateDetails(df),*args,ansicolor.Eseq.normtext)
 
 # Shared with Pam
 def eprint(*args, df=constring.Dateformt.norm_micros, **kwargs):
     '''error printing function. this prints the text in red'''
     cstack = inspect.stack()
-    cdetails = gpam_stackDetails( cstack )
-    print(ansicolor.Eseq.defred+gpam_dateDetails(df),\
+    cdetails = __stackDetails( cstack )
+    print(ansicolor.Eseq.defred+__dateDetails(df),\
              *args, cdetails, ansicolor.Eseq.normtext)
 
 # Shared with Pam
@@ -66,8 +66,8 @@ def iprint(*args, df=constring.Dateformt.norm_micros, **kwargs):
 def exprint(*args, df=constring.Dateformt.norm_micros, **kwargs):
     '''prints the args, but with prepended Exception has occurred'''
     cstack = inspect.stack()
-    cdetails = gpam_stackDetails( cstack )
-    print(ansicolor.Eseq.bolred+gpam_dateDetails(df),"Exception has occurred.",\
+    cdetails = __stackDetails( cstack )
+    print(ansicolor.Eseq.bolred+__dateDetails(df),"Exception has occurred.",\
             *args, cdetails, ansicolor.Eseq.normtext)
 
 ################################################################################
@@ -84,11 +84,12 @@ expt    = exprint
 ################################################################################
 # Macros
 ################################################################################
-def gpam_dateDetails(sformat):
+def __dateDetails(sformat):
     #easy datetime macro
     return datetime.datetime.now().strftime(sformat)
 
-def gpam_stackDetails( stack ):
+def __stackDetails( stack ):
+    #format the printing of info of caller function
     ind = 1
     module = inspect.getmodule(stack[ind])
     cfilename = stack[ind].filename
@@ -100,28 +101,54 @@ def gpam_stackDetails( stack ):
     
 ################################################################################
 
-def enable_gpam():
-    # this enables the correct gpam function to be mapped
+def __econtrol( everbose=True, edebug=True, eerror=True, ewarn=True, einfo=True, eraw=True ):
+    '''helper control function to toggle enable or disable of each individual printing
+    functions'''
     global verbose
     global debug
     global raw
     global info
-    verbose = vprint
-    debug   = dprint
-    raw     = rprint
-    info    = iprint
+    global warn
+    global error
+    nothing = lambda *a : None
+    verbose = vprint if verbose else  nothing
+    debug   = dprint if debug else    nothing
+    error   = eprint if error else    nothing
+    warn    = wprint if warn else     nothing
+    info    = iprint if verbose else  nothing
+    raw     = rprint if raw else      nothing
 
-def disable_gpam():
+
+def enable():
+    # this enables the correct gpam function to be mapped
+    __econtrol( 
+            everbose=True,
+            edebug=True,
+            eerror=True,
+            ewarn=True,
+            einfo=True,
+            eraw=True)
+
+def disable():
     # this disabled, gpam are now mapped to lambda nones
     # gpam_error cannot be disabled. We do not encourage hiding errors
-    global verbose
-    global debug
-    global raw
-    global info
-    verbose = lambda *a: None
-    debug   = lambda *a: None
-    raw     = lambda *a: None
-    info    = lambda *a: None
+    __econtrol(
+            everbose=False,
+            edebug=False,
+            eerror=True,
+            ewarn=True,
+            einfo=False,
+            eraw=False)
+
+def disable_all():
+    '''disable everything. except EXCEPTION printing'''
+    __econtrol(
+            everbose=False,
+            edebug=False,
+            eerror=False,
+            ewarn=False,
+            einfo=False,
+            eraw=False)
 
 # Test script
 if __name__ == "__main__":
@@ -129,12 +156,12 @@ if __name__ == "__main__":
     warn("Warning")
     error("to err is human")
     verbose("verbose is enabled by default")
-    disable_gpam()
+    disable()
     verbose("silenced")
     debug("silenced x2")
     error("can't silence me")
     raw("raw test 1")
-    enable_gpam()
+    enable()
     verbose("ok' we're back",df=constring.Dateformt.norm)
     raw("raw test 2")
 

@@ -18,12 +18,12 @@ import pyioneer.support.gpam as gpam
 def send(sock,msg):
     # prefix the message with a length variable
     if( type(msg) != bytes ):
-        gpam.warn("smsg.send requires the msg to be a bytestream")
+        #gpam.warn("smsg.send requires the msg to be a byte array")
         if( type(msg) == str):
-            gpam.info("msg type is string. attempting encoding with utf-8")
+            #gpam.info("msg type is string. attempting to encode with utf-8")
             msg = msg.encode('utf-8')
         else:
-            gpam.error("msg is not string nor bytes. unable to proceed")
+            gpam.error("msg is not string nor bytes. unable to send with smsg")
             return False
     msg = struct.pack('>I', len(msg)) + msg
     sock.sendall( msg )
@@ -47,6 +47,17 @@ def recvall(sock, sz):
             return None
         out += packet
     return out
+
+
+def readall(sock):
+    # receives all from socket sock.
+    fbuf = b''
+    while True:
+        rbuf = sock.recv(1024) 
+        if not rbuf:
+            return None
+        fbuf += rbuf
+    return fbuf
 
 # Test not available
 if __name__ == "__main__":
