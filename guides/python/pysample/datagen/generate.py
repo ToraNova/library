@@ -201,5 +201,5 @@ if __name__ == "__main__":
         #transpose the data
         #gen.transpose_md()
 
-        gen.write_dataset("data0.csv")
-        #gen.vsplit_write("data9.csv",split_point=3,write_target_1=False)
+        #gen.write_dataset("data1.csv")
+        gen.vsplit_write("data1.csv",split_point=3,write_target_1=False)

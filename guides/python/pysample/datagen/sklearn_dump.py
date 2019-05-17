@@ -19,17 +19,26 @@ if __name__ == "__main__":
 	quotechar ='"'
 
 	with open('xda.csv','w') as outfile:
-			csv_writer = csv.writer(outfile,
-					delimiter=delim,quotechar=quotechar,
-					quoting=csv.QUOTE_MINIMAL)
-			for i,rows in enumerate(xda):
-				csv_writer.writerow( rows)
+            csv_writer = csv.writer(outfile,
+                        delimiter=delim,quotechar=quotechar,
+                        quoting=csv.QUOTE_MINIMAL)
+            for i,rows in enumerate(xda):
+                csv_writer.writerow( rows)
 
 	with open('xdb.csv','w') as outfile:
-			csv_writer = csv.writer(outfile,
-					delimiter=delim,quotechar=quotechar,
-					quoting=csv.QUOTE_MINIMAL)
-			for i,rows in enumerate(xdb):
-				csv_writer.writerow( rows)
+            csv_writer = csv.writer(outfile,
+                        delimiter=delim,quotechar=quotechar,
+                        quoting=csv.QUOTE_MINIMAL)
+            for i,rows in enumerate(xdb):
+                rows = numpy.append( rows, yc[i] )
+                csv_writer.writerow( rows )
+
+	with open('xdc.csv','w') as outfile:
+            csv_writer = csv.writer(outfile,
+                        delimiter=delim,quotechar=quotechar,
+                        quoting=csv.QUOTE_MINIMAL)
+            for i,rows in enumerate(xc):
+                rows = numpy.append( rows, yc[i] )
+                csv_writer.writerow( rows)
 	
 	

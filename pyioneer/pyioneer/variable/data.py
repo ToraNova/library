@@ -117,7 +117,7 @@ class DataController(Pam):
         '''emulates a standard dictionary behaviour, except it
         prints out a warning if the data is not loaded'''
         if( not self.isLoaded(dname) ):
-            self.warning("trying to read unloaded values",dname)
+            self.warn("trying to read unloaded values",dname)
         return self._mp.get(dname)
 
 class HomoCSVDataController(DataController):

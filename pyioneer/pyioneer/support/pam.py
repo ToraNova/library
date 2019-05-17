@@ -30,13 +30,12 @@ class Pam:
     # Interface methods (use super().shutup() / tell() or verboseonly() )
     ################################################################################
     def shutup(self):
-        '''stops ALL printing'''
+        '''stops ALL printing, except EXCEPTIONS'''
         self.verbose = self.nothing
         self.info    = self.nothing 
         self.debug   = self.nothing 
         self.raw     = self.nothing 
         self.warn    = self.nothing 
-        self.expt    = self.nothing 
         self.error   = self.nothing 
 
     def quiet(self):
@@ -46,7 +45,6 @@ class Pam:
         self.debug   = self.nothing
         self.raw     = self.nothing
         self.warn    = gpam.wprint
-        self.expt    = gpam.exprint
         self.error   = gpam.eprint
 
     def sorry(self):
@@ -56,7 +54,6 @@ class Pam:
         self.debug   = gpam.dprint
         self.raw     = gpam.rprint
         self.warn    = gpam.wprint
-        self.expt    = gpam.exprint
         self.error   = gpam.eprint
 
     def verboseonly(self):
@@ -66,14 +63,14 @@ class Pam:
         self.raw     = self.nothing
         self.debug   = self.nothing
         self.warn    = gpam.wprint
-        self.expt    = gpam.exprint
         self.error   = gpam.eprint
     ################################################################################
 
     ################################################################################
-    # Constructor. use super().__init__( t/f, t/f, t/f ) to change default behavior
+    # Constructor. use super().__init__( t/f, t/f, .., t/f ) to change default behavior
+    # please do not rmb the sequence, use the names instead.
     ################################################################################
-    def __init__(self,verbose=True,debug=True,warn=True,error=True,raw=True,expt=True):
+    def __init__(self,verbose=True,debug=True,error=True,warn=True,info=True,raw=True):
         '''use super().__init__() to initialize debugging and verbose mode,
         if super().__init__() is not called, then no debugging or verbose will
         start unless super().tell() or super().verboseonly() is called.'''
@@ -83,7 +80,6 @@ class Pam:
         self.warn    = gpam.wprint if warn else     self.nothing
         self.info    = gpam.iprint if verbose else  self.nothing
         self.raw     = gpam.rprint if raw else      self.nothing
-        self.expt    = gpam.exprint if expt else    self.nothing
     ################################################################################
     
     ################################################################################
@@ -130,6 +126,6 @@ if __name__ == "__main__":
     
     p = Pam_Test(True,True,True,True,True)
     p.test()
-    gpam.disable_gpam()
+    gpam.disable()
     p.test() # disabling gpam is useless eventhough pam uses it
 
