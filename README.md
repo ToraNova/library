@@ -1,38 +1,31 @@
-# Lib ToraNova
+# Library ToraNova
+This repository is used to store some useful libraries that
+can aid development in C, Python and Java as well as some useful
+templates
 
-### This repo is used to store some useful modules and samples.
-created by ToraNova.
+## Prodtools - Production tools for C/C++
+[Prodtools](prodtools)
 
-### Library population
-explains what is on the library and their current progress
+Requires:
+* cmake.3.14.1
 
-#### Prodtools - Production tool for C
-TODO: update the cmake system
-TODO: system install feature for quick cloning
+## Pyioneer - Production tools for Python3.6x
+[Pyioneer](pyioneer)
 
-#### Pyioneer  - Prodcution tool for Python
-TODO: Populate the library
+Requires:
+* python3-dev
 
-#### Python - Samples and minimal modules
-TODO: include a custom python library project
-TODO: python wrapper module (module to easily wrap C/java code)
+## Templates - templates of cmake/swig/make to aid development
+[Templates](templates)
 
-#### Java - sample modules, example ant build files
-TODO: custom java library
-TODO: update the ant system
+## Guides
+Some guides for quick lookup, currently the most populated one is
+the python guides on pysample
+[Python-guide](guides/python)
+[c-guide](guides/c)
+[raspberrypi-guide](guides/rpi)
+[bash-scripts-guide](guides/shell)
 
-#### rpi - embedded systems (raspberry pi libraries)
-currently some samples available, not populated at all
-
-#### templates
-cmake and make templates, include LaTex next time
-
-#### shell - system/network/ script for a better life
-TODO: structure the damn thing
-
-#### gitignores - sample gitignore files
-TODO: a gitignore readme file to allow creation of better gitignore systems
-
-#### c
-TODO: old and outdate, port it to either prodtools or removal
-
+## License
+You can do whatever you want with it. FOSS ftw.
+[License](LICENSE)
