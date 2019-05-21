@@ -16,18 +16,20 @@ Currently enables basic printing auxiliary pam.py @ support.Pam
 ## Installation
 
 ### Manual Installation
-run the following
+run the following (with root permissions)
 
-`sudo python3 setup.py install`
+	python3 setup.py install
 
 ### Scripted Installation
 Installation scripts are provided to quickly hasten the process.
 to install:
 
-`./install.sh`
+	./install.sh
 
 to uninstall/purge:
 
-`./uninstall.sh`
+	./uninstall.sh
 
-`./purge.sh`
+or
+
+	./purge.sh
