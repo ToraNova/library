@@ -7,14 +7,17 @@
 # 
 # @Author ToraNova
 # @mailto chia_jason96@live.com
-# @version 1.0
+# @version 1.1
 # @date 13 May 2019
+# @changelogs
+# 1.0 : introduced
+# 1.1 : added getgpam, removed __enable and other intermodule useless crap
 ################################################################################
 
 ################################################################################
 # dependencies importation
 ################################################################################
-import datetime, inspect
+import datetime, inspect, sys
 ################################################################################
 # local imports (import as if the library is a sys library)
 from pyioneer.constant import ansicolor, constring
@@ -70,16 +73,12 @@ def exprint(*args, df=constring.Dateformt.norm_micros, **kwargs):
     print(ansicolor.Eseq.bolred+__dateDetails(df),"Exception has occurred.",\
             *args, cdetails, ansicolor.Eseq.normtext)
 
-################################################################################
-# Default setups
-################################################################################
-error   = eprint
-warn    = wprint
-verbose = vprint
-debug   = dprint
-raw     = rprint
-info    = iprint
-expt    = exprint
+def nothing(*args, **kwargs):
+    '''place holder to do nothing
+    alt: lambda *a, **kw : None
+    currently not used
+    '''
+    return None
 
 ################################################################################
 # Macros
@@ -101,67 +100,47 @@ def __stackDetails( stack ):
     
 ################################################################################
 
-def __econtrol( everbose=True, edebug=True, eerror=True, ewarn=True, einfo=True, eraw=True ):
-    '''helper control function to toggle enable or disable of each individual printing
-    functions'''
-    global verbose
-    global debug
-    global raw
-    global info
-    global warn
-    global error
-    nothing = lambda *a : None
-    verbose = vprint if verbose else  nothing
-    debug   = dprint if debug else    nothing
-    error   = eprint if error else    nothing
-    warn    = wprint if warn else     nothing
-    info    = iprint if verbose else  nothing
-    raw     = rprint if raw else      nothing
+# Update 1.1 : Please do not use gpam directly. Please use the export object gpam instead.
+# This is so thtat the object can be turned off at will.
+# Use getgpam if you wanna use pam, but you are not on the Object Oriented model.
 
+def getgpam( everbose=True, edebug=True, eerror=True, ewarn=True, einfo=True, eraw=True ):
+    '''obtain a gpam object that can be controlled easily. This is for users who want to use
+    pam but has no objects or is too lazy to create a pam object theirselves. The gpam obj
+    can be turned on and off like a pam object (it's just a glorified pam object)
 
-def enable():
-    # this enables the correct gpam function to be mapped
-    __econtrol( 
-            everbose=True,
-            edebug=True,
-            eerror=True,
-            ewarn=True,
-            einfo=True,
-            eraw=True)
+    @example use :
+    from pyioneer.support.gpam import getgpam
+    pam = getgpam()
+    pam.verbose("foobar!")
+    pam.quiet()
+    pam.verbose("shhh")
+    pam.warn("i'm still here")
+    pam.verboseonly()
+    pam.verbose("ok let's talk")
+    '''
 
-def disable():
-    # this disabled, gpam are now mapped to lambda nones
-    # gpam_error cannot be disabled. We do not encourage hiding errors
-    __econtrol(
-            everbose=False,
-            edebug=False,
-            eerror=True,
-            ewarn=True,
-            einfo=False,
-            eraw=False)
-
-def disable_all():
-    '''disable everything. except EXCEPTION printing'''
-    __econtrol(
-            everbose=False,
-            edebug=False,
-            eerror=False,
-            ewarn=False,
-            einfo=False,
-            eraw=False)
+    # This is dangerous, do not mess up the imports here as it will likely lead to circular
+    # import ( Since PAM depends on GPAM. and now this function is IN GPAM )
+    # Justification: the original intent of gpam is to allow global printing with no hassle of
+    # oo methods. Thus it is befitting that this function is on gpam
+    from pyioneer.support.pam import Pam
+    # Creates the Pam object (ironic how Pam depends on GPAM, now they're intertwined
+    out_gpam = Pam( everbose, edebug, eerror, ewarn, einfo, eraw )
+    # Exports/allow users to obtain the object
+    return out_gpam
 
 # Test script
+# If you only use gpam without
 if __name__ == "__main__":
     
-    warn("Warning")
-    error("to err is human")
-    verbose("verbose is enabled by default")
-    disable()
-    verbose("silenced")
-    debug("silenced x2")
-    error("can't silence me")
-    raw("raw test 1")
-    enable()
-    verbose("ok' we're back",df=constring.Dateformt.norm)
-    raw("raw test 2")
+    vprint("verbose")
+    wprint("warning")
+    eprint("error")
+    iprint("info",df=constring.Dateformt.norm)
+    rprint("raw")
+    dprint("debug")
+    exprint("exceptions")
+    print("Test OK for",__file__)
+
 

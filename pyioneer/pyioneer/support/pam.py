@@ -126,6 +126,5 @@ if __name__ == "__main__":
     
     p = Pam_Test(True,True,True,True,True)
     p.test()
-    gpam.disable()
-    p.test() # disabling gpam is useless eventhough pam uses it
+    print("Test OK for",__file__)
 

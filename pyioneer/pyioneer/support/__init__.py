@@ -14,9 +14,6 @@
 # import pyioneer.suppoer.pam.Pam which looks bad
 # export the Pam module as Pam
 # from pyioneer.support import Pam
-from . import pam  
+from . import pam
 Pam = pam.Pam
-
-from . import lstools
-from . import gpam
 

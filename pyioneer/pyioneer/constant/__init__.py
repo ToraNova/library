@@ -14,4 +14,11 @@
 # imported as such (examples)
 # import pyioneer.constant.ansicolor as ansicolor
 # import pyioneer.constant.constring as constring
-# then use ansicolor.Eseq from ther
+# One can also import Eseq directly, use
+# import pyioneer.constant.ansicolor.Eseq as Eseq
+
+from . import ansicolor
+Eseq = ansicolor.Eseq
+
+from . import constring
+Dateformt = constring.Dateformt

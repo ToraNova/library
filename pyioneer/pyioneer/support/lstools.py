@@ -54,6 +54,15 @@ def vsplit_2dlist(target,cutpoint):
     ret1 = target[:][cutpoint:] #s_point till end
     return (ret0,ret1)
 
+def transpose_2dlist(target):
+    '''perform transpose on a 2D list. assumes target has the form
+    of a matrix (i.e, with positive rowcount and all column lenght in
+    the rows are the same'''
+    # PLEASE CALL pyioneer.variable.sanitize.isMatrix before launching
+    # this function. PLEASE!
+    return list( map(list, zip(*target)))
+
+
 # Test script
 if __name__ == "__main__":
 

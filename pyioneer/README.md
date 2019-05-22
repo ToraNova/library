@@ -9,9 +9,11 @@ code development while repeating yourself as less as possible.
 
 The project currently supports python3 only
 
-## Version 1.0
-Currently enables basic printing auxiliary pam.py @ support.Pam
+## Version 1.1
+Updated from 20/05/2019
 
+### Changelogs
+Read more here [Changelogs](changelogs.md)
 
 ## Installation
 
