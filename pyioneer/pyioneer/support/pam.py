@@ -29,57 +29,42 @@ class Pam:
     ################################################################################
     # Interface methods (use super().shutup() / tell() or verboseonly() )
     ################################################################################
-    def shutup(self):
-        '''stops ALL printing, except EXCEPTIONS'''
-        self.verbose = self.nothing
-        self.info    = self.nothing 
-        self.debug   = self.nothing 
-        self.raw     = self.nothing 
-        self.warn    = self.nothing 
-        self.error   = self.nothing 
-
-    def quiet(self):
-        '''suppress all verbose,warning, info raw. Errors and exception still displays'''
-        self.verbose = self.nothing
-        self.info    = self.nothing
-        self.debug   = self.nothing
-        self.raw     = self.nothing
-        self.warn    = gpam.wprint
-        self.error   = gpam.eprint
-
-    def sorry(self):
-        '''enable all printing for the module'''
-        self.verbose = gpam.vprint
-        self.info    = gpam.iprint
-        self.debug   = gpam.dprint
-        self.raw     = gpam.rprint
-        self.warn    = gpam.wprint
-        self.error   = gpam.eprint
-
-    def verboseonly(self):
-        '''only allow verboses (exception,warning and errrors are always enabled)'''
-        self.verbose = gpam.vprint
-        self.info    = gpam.iprint
-        self.raw     = self.nothing
-        self.debug   = self.nothing
-        self.warn    = gpam.wprint
-        self.error   = gpam.eprint
-    ################################################################################
-
-    ################################################################################
-    # Constructor. use super().__init__( t/f, t/f, .., t/f ) to change default behavior
-    # please do not rmb the sequence, use the names instead.
-    ################################################################################
-    def __init__(self,verbose=True,debug=True,error=True,warn=True,info=True,raw=True):
-        '''use super().__init__() to initialize debugging and verbose mode,
-        if super().__init__() is not called, then no debugging or verbose will
-        start unless super().tell() or super().verboseonly() is called.'''
+    def controlpam(self, verbose=True, debug=True, error=True, warn=True, info=True, raw=True):
+        '''main control function to toggle on/off behaviours for printing/loggin'''
         self.verbose = gpam.vprint if verbose else  self.nothing
         self.debug   = gpam.dprint if debug else    self.nothing
         self.error   = gpam.eprint if error else    self.nothing
         self.warn    = gpam.wprint if warn else     self.nothing
         self.info    = gpam.iprint if verbose else  self.nothing
         self.raw     = gpam.rprint if raw else      self.nothing
+
+    def shutup(self):
+        '''stops ALL printing, except EXCEPTIONS'''
+        self.controlpam( False, False, False, False ,False, False)
+
+    def quiet(self):
+        '''suppress all verbose,warning, info raw. Errors and exception still displays'''
+        self.controlpam( False, False, True, True, False, False)
+
+    def sorry(self):
+        '''enable all printing for the module'''
+        self.controlpam( True, True, True, True, True, True)
+
+    def verboseonly(self):
+        '''only allow verboses (exception,warning and errrors are always enabled)'''
+        self.controlpam( True, False, True, True, True, False) 
+
+    ################################################################################
+
+    ################################################################################
+    # Constructor. use super().__init__( t/f, t/f, .., t/f ) to change default behavior
+    # please do not rmb the sequence, use the names instead.
+    ################################################################################
+    def __init__(self, verbose=True, debug=True, error=True, warn=True, info=True, raw=True):
+        '''use super().__init__() to initialize debugging and verbose mode,
+        if super().__init__() is not called, then no debugging or verbose will
+        start unless super().tell() or super().verboseonly() is called.'''
+        self.controlpam( verbose, debug, error, warn, info, raw )
     ################################################################################
     
     ################################################################################

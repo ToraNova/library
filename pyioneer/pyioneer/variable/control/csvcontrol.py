@@ -44,7 +44,6 @@ class CSVController(DictController):
         '''
         try:
             with open(filename) as dataset:
-                self._mp[dname] = []
                 reader = csv.reader(dataset, delimiter=adelimiter, quotechar=aquotechar)
                 #skips over( headers or unwanted first few rows)
                 for index in range(skipc):
@@ -55,13 +54,27 @@ class CSVController(DictController):
                     del self._mp[dname]
                 else:
                     self.verbose("Reading {} rows.".format(len(rin_list)))
-                    for index,row in enumerate(rin_list):
-                        self._mp[dname].append( [i for i in row] )
-                        self.debug("Colsize:",len(row),row)
+                    self.load(dname, rin_list)
         except Exception as e:
             # forces the read operation to be atomic. either it succeed or fail
             self.expt(str(e))
             self.unload(dname)
+
+    def findEmpty(self, dname=_default_readkey):
+        '''finds the rows in dname which has fields that has str of length 0,
+        returns the row number and colnum in a list
+        one can use it with getrows:
+        missing = findEmpty()
+        misrows = getrows( [ m[0] for m in missing])
+        '''
+        sz = self.size(dname)
+        rows = self.getrows([i for i in range(sz[0])] , dname)
+        outlist = []
+        for rdx,r in enumerate(rows):
+            for kdx,k in enumerate(r):
+                if len(k) <= 0:
+                    outlist.append( (rdx,kdx) )
+        return outlist
 
     def isRead(self,dname=_default_readkey):
         '''checks if reading is successfuly conducted on the default key'''
@@ -78,14 +91,9 @@ class CSVController(DictController):
     def dsummary(self, dname=_default_readkey):
         # obtain a summary on all columns
         sz = self.size(dname)
-        self.verbose("Size of dname:",sz)
         cols = self.getcols( [i for i in range(sz[1])] , dname)
-        for c in cols:
-            tmpstat = Statsmachine(c)
-            tmpstat.getMostFrequent()
-            tmpstat.getLeastFrequent()
-            tmpstat.getUnique()
-            tmpstat.getCounts()
+        out = [ Statsmachine(c) for c in cols ]
+        return out
 
     def getrows( self, rn , dname=_default_readkey):
         '''obtains the rows'''
