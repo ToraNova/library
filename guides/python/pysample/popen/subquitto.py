@@ -18,7 +18,13 @@ if __name__ == "__main__":
         try:
             #this blocks when there is no input
             bout = mqbroker.stdout.readline()
+            if( len(bout) <= 0):
+                mqbroker.terminate()
+                time.sleep(1)
+                print("Outlen <= 0, aborting")
+                break
             print(bout)
+            time.sleep(0.1)
         except KeyboardInterrupt:
             mqbroker.terminate()
             time.sleep(2)

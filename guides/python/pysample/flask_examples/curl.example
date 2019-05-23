@@ -1,0 +1,4 @@
+# the following line is an example of issuing a curl request.
+# WARN: note the --insecure arg, this instructs curl to treat the connection
+# as already verified. DO NOT USE THIS IN ACTUAL PRACTICE PLEASE FOR THE LOVE OF GOD.
+curl 'https://localhost:8000/' -H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Connection: keep-alive' -H 'Upgrade-Insecure-Requests: 1' --insecure
