@@ -14,6 +14,8 @@ if __name__ == "__main__":
             stdin=ps.stdout, stdout=PIPE)
     grep = Popen(['grep',target_process],
             stdin=vgrep.stdout,stdout=PIPE)
+    # equivalent to
+    # ps aux | grep -v grep | grep mosquitto
     try:
         out,err = grep.communicate(timeout=5)
         if(len(out) <=0):
