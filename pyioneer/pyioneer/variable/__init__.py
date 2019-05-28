@@ -10,3 +10,8 @@
 # for non class functions, please refrain from re-exporting
 # only perform re-export if they are classes to prevent something like
 # import pyioneer.suppoer.pam.Pam which looks bad
+from . import datagen
+DataGen = datagen.DataGen
+
+from . import mutator
+MutatorRule = mutator.MutatorRule
