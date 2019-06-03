@@ -10,6 +10,8 @@ if __name__ == "__main__":
     while runflag:
         try:
             #this blocks when there is no input
+            # one could also use 
+            # proc.stdout.readline()
             for line in proc.stdout:
                 print("POPING STDOUT:",line)
                 if( len(line) <= 0):
