@@ -17,7 +17,7 @@ if __name__ == "__main__":
     ctx = SSL.Context(SSL.SSLv23_METHOD)
     ctx.set_options(SSL.OP_NO_SSLv2)
     ctx.set_verify( SSL.VERIFY_PEER|SSL.VERIFY_FAIL_IF_NO_PEER_CERT, verify_cb )
-    ctx.use_privatekey_file( 'bob.pkey' )
+    ctx.use_privatekey_file( 'bob.skey' )
     ctx.use_certificate_file( 'bob.cert' )
     ctx.load_verify_locations( 'AA.cert' ) #verify
     

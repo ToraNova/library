@@ -14,6 +14,7 @@
 # dependencies import
 from abc import ABC, abstractmethod
 import datetime, inspect
+from collections import namedtuple
 ################################################################################
 # local imports (import as if the library is a sys library)
 from pyioneer.constant import ansicolor, constring
@@ -37,6 +38,12 @@ class Pam:
         self.warn    = gpam.wprint if warn else     self.nothing
         self.info    = gpam.iprint if verbose else  self.nothing
         self.raw     = gpam.rprint if raw else      self.nothing
+        self._pam_eflag = error
+        self._pam_vflag = verbose
+        self._pam_dflag = debug
+        self._pam_wflag = warn
+        self._pam_iflag = info
+        self._pam_rflag = raw
 
     def shutup(self):
         '''stops ALL printing, except EXCEPTIONS'''

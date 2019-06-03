@@ -11,7 +11,7 @@ from certgen import createKeyPair, createCertRequest, createCertificate
 from certgen import TYPE_RSA, TYPE_DSA
 
 def write_certkey_pem( fname, key, cert ):
-    with open(fname+'.pkey','w') as f:
+    with open(fname+'.skey','w') as f:
         f.write( crypto.dump_privatekey(crypto.FILETYPE_PEM, key).decode('utf-8') )
     with open(fname+'.cert','w') as f:
         f.write( crypto.dump_certificate( crypto.FILETYPE_PEM, cert).decode('utf-8') )

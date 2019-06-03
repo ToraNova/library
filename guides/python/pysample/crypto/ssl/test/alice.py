@@ -17,7 +17,7 @@ if __name__ == "__main__":
     # initialize ssl context
     ctx = SSL.Context(SSL.SSLv23_METHOD)
     ctx.set_verify( SSL.VERIFY_PEER, verify_cb )
-    ctx.use_privatekey_file( 'alice.pkey' )
+    ctx.use_privatekey_file( 'alice.skey' )
     ctx.use_certificate_file( 'alice.cert' )
     ctx.load_verify_locations( 'AA.cert' ) #verify
     
