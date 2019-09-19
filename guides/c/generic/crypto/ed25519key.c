@@ -28,9 +28,16 @@ int main(int argc, char *argv[]){
 		streamctl = stdout;
 		b=0;
 	}else{
-		//else, print to a filestream
-		streamctl = fopen(argv[1], "w");
-		b=1;
+		if( argv[1][0] == '-' ){
+			//perhaps a help command ?
+			printf("Usage: ed25519gen <prifilename> > <pubfilename>\n");
+			printf("This writes private key to the <prifilename> and public key to the <pubfilename>\n");
+			return 1;
+		}else{
+			//else, print to a filestream
+			streamctl = fopen(argv[1], "w");
+			b=1;
+		}
 	}
 
 	EVP_PKEY *pkey = NULL;
