@@ -1,0 +1,17 @@
+ROP - Return Oriented Programming
+
+ROP is a method used to circumvent exploit prevention strategies.
+attacker uses control of stack right before the RET to direct code
+into an address that is supposedly safe.
+
+additional notes:
+for x86 (32bit exploit), use the -m32 flag
+gcc -m32 test.c
+
+the gnu compiler protects against stack smashing (buffer overflows)
+use the following flag to disable it
+-fno-stack-protector
+
+using the gdb to disassemble the compiled program 'a,out'
+
+run the command : disas <function_name> to disassemble and assess a function's assembler code
