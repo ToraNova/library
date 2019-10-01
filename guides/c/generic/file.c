@@ -4,8 +4,8 @@
  * compile with:
  * gcc file.c -o file
  */
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define MAXBUFSIZE 1024
 
