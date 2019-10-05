@@ -1,0 +1,20 @@
+Due to the staggering amount of cryptographic python libraries out there,
+this section is managed by pipenv
+
+please install pipenv with distro's package manager
+pacman -S python-pipenv
+apt install python-pipenv
+
+randkeygen.py is not managed by pipenv and can be simply run using the
+python command or ./randkeygen.py
+
+for the files under the directories (aes/openssl etc.) use the
+pipenv run python <script.py> to run them
+
+in addition, if this is on a newly found machine, please install the
+modules first with
+pipenv install --dev
+
+Files under pipenv faces difficulty installing the libraries via pip
+of course one could still compile the libs from source but for sake
+of guides this is overkill
