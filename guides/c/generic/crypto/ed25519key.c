@@ -45,7 +45,8 @@ int main(int argc, char *argv[]){
 	EVP_PKEY_keygen_init(pctx);
 	EVP_PKEY_keygen(pctx, &pkey);
 	EVP_PKEY_CTX_free(pctx);
-	PEM_write_PrivateKey(streamctl, pkey, NULL, NULL, 0, NULL, NULL);
+	//PEM_write_PrivateKey(streamctl, pkey, NULL, NULL, 0, 0, NULL); //using 'traditional' format
+	PEM_write_PKCS8PrivateKey(streamctl, pkey, NULL, NULL, 0, 0, NULL); //use PKCS8 (includes public) similar used by bouncy castle
 	PEM_write_PUBKEY(stdout, pkey);
 
 	fclose(streamctl);
