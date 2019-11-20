@@ -186,7 +186,7 @@ int b64_isvalidchar(char c)
  */
 int main(int argc, char **argv)
 {
-	const char *data = "ABC123Test Lets Try this' input and see What \"happens\"\n";
+	const char *data = "ABC123Test Lets Try this' input and see What \"happens\"";
 	char       *enc;
 	char       *out;
 	size_t      out_len;
