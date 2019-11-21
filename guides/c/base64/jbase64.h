@@ -13,6 +13,8 @@
 
 #include <stddef.h>
 
+#define BASE64_DEFAULT_WRAP 76
+
 //compute b64 size based on input size of byte arr
 //wrap -- how many characters after to insert a line wrap (\n)
 //by default this should be 76. set to 0 to disable line wrap

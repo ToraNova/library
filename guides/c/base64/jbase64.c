@@ -16,8 +16,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define BASE64_DEFAULT_WRAP 76
-
 /*
  * Thank god for these
  */
@@ -86,7 +84,7 @@ size_t b64_decoded_size(const char *in){
 
 	for (i=len; i-->0; ) {
 		//ignore padding and linewraps
-		if (in[i] == '=' || in[i] == '\n') {
+		if (in[i] == '=' || (in[i] == '\n' && i<len-1)) {
 			ret--;
 		} else {
 			break;
@@ -111,7 +109,7 @@ char *b64_encode(const unsigned char *in, size_t len, size_t wrap){
 
 	//obtain output size
 	elen = b64_encoded_size(len, wrap);
-	out  = (char *)malloc(elen+1);
+	out  = (char *)malloc(elen+2);
 	out[elen] = '\0';
 
 	for (i=0, j=0; i<len; i+=3, j+=4) {
@@ -215,7 +213,7 @@ int b64_isvalidchar(char c)
  */
 int main(int argc, char **argv)
 {
-	const char *data = "test to ensure that the decoder works correctly 1232133421awdawd";
+	const char *data = "test to ensure that the decoder works correctly 123213";
 	char *enc;
 	char *out;
 
