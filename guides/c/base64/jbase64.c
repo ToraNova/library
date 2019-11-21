@@ -111,7 +111,7 @@ char *b64_encode(const unsigned char *in, size_t len, size_t wrap){
 
 	//obtain output size
 	elen = b64_encoded_size(len, wrap);
-	out  = malloc(elen+1);
+	out  = (char *)malloc(elen+1);
 	out[elen] = '\0';
 
 	for (i=0, j=0; i<len; i+=3, j+=4) {
@@ -148,10 +148,10 @@ char *b64_encode(const unsigned char *in, size_t len, size_t wrap){
 //decode base64 to binary
 //remember to free the memory once done
 //return 1 upon success and 0 on fail
-char *b64_decode(const char *in)
+unsigned char *b64_decode(const char *in)
 {
 	size_t outlen = b64_decoded_size(in);
-	char *out = malloc(outlen+1);//include null terminator
+	unsigned char *out = (unsigned char *)malloc(outlen+1);//include null terminator
 	size_t len;
 	size_t i;
 	size_t j;
@@ -191,7 +191,6 @@ char *b64_decode(const char *in)
 		//probably decode fail
 		return NULL;
 	}
-	out[outlen] = '\0';
 
 	return out;
 }
@@ -219,7 +218,6 @@ int main(int argc, char **argv)
 	const char *data = "test to ensure that the decoder works correctly 1232133421awdawd";
 	char *enc;
 	char *out;
-	size_t out_len;
 
 	printf("enc_in (%lu): %s\n", strlen(data), data);
 	enc = b64_encode((const unsigned char *)data, strlen(data), BASE64_DEFAULT_WRAP);
@@ -227,12 +225,12 @@ int main(int argc, char **argv)
 	printf("enc_out (%lu):\n%s\n", strlen(enc), enc);
 
 	/* +1 for the NULL terminator. */
-	out = b64_decode(enc);
+	out = (char *)b64_decode(enc);
 	if( out == NULL ){
 		printf("Decode failure\n");
 		return 1;
 	}
-
+	out[b64_decoded_size(enc)] = '\0'; //for strings
 	printf("dec_ou (%lu): %s\n", strlen(out), out);
 	free(out);
 	return 0;

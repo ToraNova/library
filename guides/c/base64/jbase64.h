@@ -30,7 +30,10 @@ char *b64_encode(const unsigned char *in, size_t len, size_t wrap);
 //decode base64 to binary
 //please remember to free up memory once done with output
 //from b64_decoded_size function
-char *b64_decode(const char *in);
+//an additional byte is allocated at the end of the return pointer
+//so if we want a string can append a \0 on the byte position using
+//b64_decoded_size()
+unsigned char *b64_decode(const char *in);
 
 //check if it is a valid base64 alphabet
 // ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
