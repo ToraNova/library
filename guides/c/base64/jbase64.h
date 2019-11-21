@@ -14,7 +14,9 @@
 #include <stddef.h>
 
 //compute b64 size based on input size of byte arr
-size_t b64_encoded_size(size_t inlen);
+//wrap -- how many characters after to insert a line wrap (\n)
+//by default this should be 76. set to 0 to disable line wrap
+size_t b64_encoded_size(size_t inlen, size_t wrap);
 
 //compute binary size required to store decoded base64 data
 size_t b64_decoded_size(const char *in);
@@ -22,7 +24,9 @@ size_t b64_decoded_size(const char *in);
 //encode binary to base64
 //please use b64_encoded_size to obtain output length and
 //allocate accordingly first
-char *b64_encode(const unsigned char *in, size_t len);
+//wrap -- how many characters to insert a line wrap (\n) after
+//by default this should be 76 according to RFC2045
+char *b64_encode(const unsigned char *in, size_t len, size_t wrap);
 
 //decode base64 to binary
 //likewise, please allocate memory for out first using the size

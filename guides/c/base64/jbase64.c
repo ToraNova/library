@@ -16,6 +16,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define BASE64_DEFAULT_WRAP 76
+
 /*
  * Thank god for these
  */
@@ -50,7 +52,9 @@ void b64_generate_decode_table()
 */
 
 //compute b64 size based on input size of byte arr
-size_t b64_encoded_size(size_t inlen){
+//wrap -- how many characters after to insert a line wrap (\n)
+//by default this should be 76. set to 0 to disable line wrap
+size_t b64_encoded_size(size_t inlen, size_t wrap){
 	size_t ret;
 
 	ret = inlen;
@@ -59,6 +63,11 @@ size_t b64_encoded_size(size_t inlen){
 	}
 	ret /= 3;
 	ret *= 4;
+
+	//count how many additional slots we need for \n
+	if(wrap > 0 && ret > wrap ){
+		ret += ret / wrap ;
+	}
 
 	return ret;
 }
@@ -76,7 +85,8 @@ size_t b64_decoded_size(const char *in){
 	ret = len / 4 * 3;
 
 	for (i=len; i-->0; ) {
-		if (in[i] == '=') {
+		//ignore padding and linewraps
+		if (in[i] == '=' || in[i] == '\n') {
 			ret--;
 		} else {
 			break;
@@ -89,7 +99,9 @@ size_t b64_decoded_size(const char *in){
 //encode binary to base64
 //please use b64_encoded_size to obtain output length and
 //allocate accordingly first
-char *b64_encode(const unsigned char *in, size_t len){
+//wrap -- how many characters to insert a line wrap (\n) after
+//by default this should be 76 according to RFC2045
+char *b64_encode(const unsigned char *in, size_t len, size_t wrap){
 	char   *out;
 	size_t  elen;
 	size_t  i;
@@ -100,11 +112,18 @@ char *b64_encode(const unsigned char *in, size_t len){
 		return NULL;
 
 	//obtain output size
-	elen = b64_encoded_size(len);
+	elen = b64_encoded_size(len, wrap);
 	out  = malloc(elen+1);
 	out[elen] = '\0';
 
 	for (i=0, j=0; i<len; i+=3, j+=4) {
+
+		//line wrap support
+		if(j >= wrap && wrap > 0){
+			out[j++] = '\n';
+			wrap += wrap;
+		}
+
 		//push 3 bytes into an int
 		v = in[i];
 		v = i+1 < len ? v << 8 | in[i+1] : v << 8;
@@ -123,6 +142,7 @@ char *b64_encode(const unsigned char *in, size_t len){
 		} else {
 			out[j+3] = '=';
 		}
+
 	}
 	return out;
 }
@@ -130,6 +150,7 @@ char *b64_encode(const unsigned char *in, size_t len){
 //decode base64 to binary
 //likewise, please allocate memory for out first using the size
 //from b64_decoded_size function
+//return 1 upon success and 0 on fail
 int b64_decode(const char *in, unsigned char *out, size_t outlen)
 {
 	size_t len;
@@ -141,7 +162,7 @@ int b64_decode(const char *in, unsigned char *out, size_t outlen)
 		return 0;
 
 	len = strlen(in);
-	if (outlen < b64_decoded_size(in) || len % 4 != 0)
+	if (outlen < b64_decoded_size(in))
 		return 0;
 
 	for (i=0; i<len; i++) {
@@ -150,7 +171,15 @@ int b64_decode(const char *in, unsigned char *out, size_t outlen)
 		}
 	}
 
-	for (i=0, j=0; i<len; i+=4, j+=3) {
+	for (i=0, j=0; (i+3)<len; i+=4, j+=3) {
+
+		//skip the newlines
+		if( in[i] == '\n' ){
+			i++;
+			if((i+3) >= len){
+				break;
+			}
+		}
 		v = b64invs[in[i]-43];
 		v = (v << 6) | b64invs[in[i+1]-43];
 		v = in[i+2]=='=' ? v << 6 : (v << 6) | b64invs[in[i+2]-43];
@@ -161,6 +190,10 @@ int b64_decode(const char *in, unsigned char *out, size_t outlen)
 			out[j+1] = (v >> 8) & 0xFF;
 		if (in[i+3] != '=')
 			out[j+2] = v & 0xFF;
+	}
+	if(j < outlen && i < len){
+		//probably decode fail
+		return 0;
 	}
 
 	return 1;
@@ -176,7 +209,7 @@ int b64_isvalidchar(char c)
 		return 1;
 	if (c >= 'a' && c <= 'z')
 		return 1;
-	if (c == '+' || c == '/' || c == '=')
+	if (c == '+' || c == '/' || c == '=' || c == '\n' )
 		return 1;
 	return 0;
 }
@@ -186,17 +219,15 @@ int b64_isvalidchar(char c)
  */
 int main(int argc, char **argv)
 {
-	const char *data = "ABC123Test Lets Try this' input and see What \"happens\"";
-	char       *enc;
-	char       *out;
-	size_t      out_len;
+	const char *data = "test to ensure that the decoder works correctly 1232133";
+	char *enc;
+	char *out;
+	size_t out_len;
 
-	printf("data:    '%s'\n", data);
-
-	enc = b64_encode((const unsigned char *)data, strlen(data));
-	printf("encoded: '%s'\n", enc);
-
-	printf("dec size %s data size\n", b64_decoded_size(enc) == strlen(data) ? "==" : "!=");
+	printf("enc_in (%lu): %s\n", strlen(data), data);
+	//enc = b64_encode((const unsigned char *)data, strlen(data), BASE64_DEFAULT_WRAP);
+	enc = b64_encode((const unsigned char *)data, strlen(data), 0);
+	printf("enc_out (%lu):\n%s\n", strlen(enc), enc);
 
 	/* +1 for the NULL terminator. */
 	out_len = b64_decoded_size(enc)+1;
@@ -208,10 +239,8 @@ int main(int argc, char **argv)
 	}
 	out[out_len] = '\0';
 
-	printf("dec:     '%s'\n", out);
-	printf("data %s dec\n", strcmp(data, out) == 0 ? "==" : "!=");
+	printf("dec_ou (%lu): %s\n", strlen(out), out);
 	free(out);
-
 	return 0;
 }
 
