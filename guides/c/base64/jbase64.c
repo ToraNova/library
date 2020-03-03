@@ -72,20 +72,27 @@ size_t b64_encoded_size(size_t inlen, size_t wrap){
 
 //compute binary size required to store decoded base64 data
 size_t b64_decoded_size(const char *in){
-	size_t len;
-	size_t ret;
 	size_t i;
+	size_t ret;
+	size_t len = 0;
+	size_t ilen = strlen(in);
 
 	if (in == NULL)
 		return 0;
 
-	len = strlen(in);
+	//calculate length of string WITHOUT newline
+	for(i=0;i < ilen ;i++){
+		if( in[i] == '\n' ) continue;
+		len++;
+	}
 	ret = len / 4 * 3;
 
-	for (i=len; i-->0; ) {
-		//ignore padding and linewraps
-		if (in[i] == '=' || (in[i] == '\n' && i<len-1)) {
+	for (i = ilen; i-->0; ) {
+		//ignore padding
+		if (in[i] == '=' ) {
 			ret--;
+		} else if(in[i] == '\n' ){
+			continue; //do nothing here
 		} else {
 			break;
 		}
@@ -103,21 +110,22 @@ char *b64_encode(const unsigned char *in, size_t len, size_t wrap){
 	size_t  i;
 	size_t  j;
 	size_t  v;
+	size_t  wc = wrap;
 
 	if (in == NULL || len == 0)
 		return NULL;
 
 	//obtain output size
 	elen = b64_encoded_size(len, wrap);
-	out  = (char *)malloc(elen+2);
+	out  = (char *)malloc(elen+1);
 	out[elen] = '\0';
+	//out[elen+1] = '\0';
 
 	for (i=0, j=0; i<len; i+=3, j+=4) {
-
 		//line wrap support
-		if(j >= wrap && wrap > 0){
+		if( wrap > 0 && wc <= 0 ){
 			out[j++] = '\n';
-			wrap += wrap;
+			wc = wrap;
 		}
 
 		//push 3 bytes into an int
@@ -138,7 +146,7 @@ char *b64_encode(const unsigned char *in, size_t len, size_t wrap){
 		} else {
 			out[j+3] = '=';
 		}
-
+		wc -= 4;
 	}
 	return out;
 }
@@ -185,10 +193,12 @@ unsigned char *b64_decode(const char *in)
 		if (in[i+3] != '=')
 			out[j+2] = v & 0xFF;
 	}
+	/*
 	if(j < outlen && i < len){
 		//probably decode fail
 		return NULL;
 	}
+	*/
 
 	return out;
 }
@@ -213,7 +223,8 @@ int b64_isvalidchar(char c)
  */
 int main(int argc, char **argv)
 {
-	const char *data = "test to ensure that the decoder works correctly 123213";
+	const char *data = "test to ensure that the decoder works correctly test to ensure that the decoder works correctly test to ensure that the decoder works correctly test to ensure that the decoder works correctly test to ensure that the decoder works correctly";
+	//const char *data = "test to ensure that the decoder works correctly test 321ABCDE";
 	char *enc;
 	char *out;
 
@@ -229,7 +240,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	out[b64_decoded_size(enc)] = '\0'; //for strings
-	printf("dec_ou (%lu): %s\n", strlen(out), out);
+	printf("dec_ou (%lu,%lu): %s\n", b64_decoded_size(enc),strlen(out), out);
 	free(out);
 	return 0;
 }
