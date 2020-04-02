@@ -14,7 +14,7 @@ if __name__ == "__main__":
     a - append
     + - r/w
 
-    an optional 3rd arg 0 at the end is to disable bufferring 
+    an optional 3rd arg 0 at the end is to disable bufferring
     (this causes the file to be written instantly
     alternatively, a flush can be used outfile.flush() to force
     the buffer to be written into the file

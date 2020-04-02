@@ -32,12 +32,12 @@ else:
 
 r = requests.post("http://localhost:1337/alerts",
         json={
-            'TriggerTimestamp':ntime,
             'Reason': None,
-            'fence_segment':{ 'id':1 },
-            'Type':{ 'id':1 },
+            'OriginBranch':1,
+            'fence_segment':1,
+            'alert_model':1,
             'Details':{ 'info':'some info' },
-            'attachment':{ 'id':fid }
+            'Attachment':{ 'id':fid }
             },
         headers={
             'Authorization': a
