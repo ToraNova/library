@@ -52,14 +52,11 @@ def hex2b64_literal(s):
     return out
 
 '''
-pure python base 64 to hex literally
-takes a HEX representation 'abWZ30=' and convert it to base64
-return an error msg if invalid char detected
-return a the base64 string on success
+checks if string is a valid b64
+return negative index if false,
+else, return a positive number (1)
 '''
-
-def b642hex_literal(s):
-    out = ''
+def isb64(s):
     #ensure string is valid
     for idx,c in enumerate(s):
         if c not in b64lkup:
@@ -71,7 +68,21 @@ def b642hex_literal(s):
                     # second last, last should be padded
                     if s[idx+1] == '=':
                         break
-            return f'invalid b64 char at {idx}:\'{c}\''
+            return -idx
+    return 1
+
+'''
+pure python base 64 to hex literally
+takes a HEX representation 'abWZ30=' and convert it to base64
+return an error msg if invalid char detected
+return a the base64 string on success
+'''
+
+def b642hex_literal(s):
+    out = ''
+    if(isb64(s) < 0):
+        i = -isb64(s)
+        return f'invalid b64 char at {i}:\'{s[i]}\''
 
     idx = 0
     # continue if we have 2 b64 for processing

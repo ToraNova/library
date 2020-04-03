@@ -26,6 +26,22 @@ def singlebytexor_literal(s, b):
     return out
 
 '''
+single-byte XOR with byte string
+b can be 0x00 - 0xff
+'''
+def singlebytexor(s, b):
+    # every char in s xor b = out
+    if type(b) != int:
+        return f'can only single byte xor with type \'int\', given {type(b)}'
+    if len(s) % 2 == 1:
+        return f'uneven hexstring length: {len(s)}'
+
+    out = b''
+    #b = bytes([b])
+    out = bytes( c ^ b for c in s )
+    return out
+
+'''
 count occurrences of character in string
 '''
 def count_literal(s,b):
@@ -40,8 +56,12 @@ statistical analysis
 return list of possible decrypts as tuple with format
 (byte-key, score, decrypted text)
 '''
-def sbxbreak_english(s, rlim = 10):
+def sbxbreak_english(s, rlim = 10, literal = False):
     # initialize a statistical table
+    if literal and type(s) != str:
+        print(f'Error on sbxbreak - literal invoked but given type {type(s)}')
+        return None
+
     chrf = [
             ('e',1.5),
             ('t',1.3),
@@ -61,13 +81,25 @@ def sbxbreak_english(s, rlim = 10):
     kb = {}
     out = []
     # brute force search the keyspace 0x00 - 0xff
-    for b in range(0,0xff):
-        h = singlebytexor_literal(s,b)
-        res = hex2utf8_literal(h)
-        for f,m in chrf:
-            stat[f][b] = count_literal(res,f)*m
-        ka[b] = 0 # initialize scores
-        kb[b] = res
+    if literal:
+        for b in range(0,0xff):
+            h = singlebytexor_literal(s,b)
+            res = hex2utf8_literal(h)
+            for f,m in chrf:
+                stat[f][b] = count_literal(res,f)*m
+            ka[b] = 0 # initialize scores
+            kb[b] = res
+    else:
+        for b in range(0,0xff):
+            h = singlebytexor(s,b)
+            try:
+                res = h.decode('utf8')
+            except:
+                res = ''
+            for f,m in chrf:
+                stat[f][b] = count_literal(res,f)*m
+            ka[b] = 0 # initialize scores
+            kb[b] = res
 
     # find statistically plausible onces
     for f,st in stat.items():
@@ -94,13 +126,13 @@ if __name__ == '__main__':
     print(res)
 
     s = '1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'
-    res = sbxbreak_english(s)[0]
+    res = sbxbreak_english(s, 10, True)[0]
     print(res)
 
     with open('1hex-4.txt','r') as f:
         for idx, line in enumerate(f):
             if( len(line) % 2 == 1):
                 line = line[:-1]
-            res = sbxbreak_english(line)[0]
+            res = sbxbreak_english(line, 10, True)[0]
             if(res[1] > 13):
                 print(idx,res)
