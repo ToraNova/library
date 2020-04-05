@@ -3,6 +3,7 @@
 # cryptopals set 1 challenge 1
 
 from lkupmap import b64lkup, hexlkup, b64map, hexmap
+from base64 import isb64
 
 '''
 pure python hex to base 64 literally
@@ -52,32 +53,11 @@ def hex2b64_literal(s):
     return out
 
 '''
-checks if string is a valid b64
-return negative index if false,
-else, return a positive number (1)
-'''
-def isb64(s):
-    #ensure string is valid
-    for idx,c in enumerate(s):
-        if c not in b64lkup:
-            if c == '=':
-                if idx == len(s)-1:
-                    # last char, valid
-                    break
-                elif idx == len(s)-2:
-                    # second last, last should be padded
-                    if s[idx+1] == '=':
-                        break
-            return -idx
-    return 1
-
-'''
 pure python base 64 to hex literally
 takes a HEX representation 'abWZ30=' and convert it to base64
 return an error msg if invalid char detected
 return a the base64 string on success
 '''
-
 def b642hex_literal(s):
     out = ''
     if(isb64(s) < 0):
@@ -115,8 +95,8 @@ if __name__ == "__main__":
     # test script
     import time
 
-    #res = 'abcd1111'
-    res = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
+    res = 'abcd1111'
+    #res = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
     stime = time.process_time()
     res = hex2b64_literal(res)
     etime = time.process_time()
