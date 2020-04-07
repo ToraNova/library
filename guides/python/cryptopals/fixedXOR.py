@@ -2,7 +2,7 @@
 # ToraNova (chia_jason96@live.com)
 # cryptopals set 1 challenge 2
 
-from hex import hex2b, b2hex
+from chex import hex2b, b2hex
 '''
 perform XOR of bytes a and b
 fast RUN, DOES NOT compare or check

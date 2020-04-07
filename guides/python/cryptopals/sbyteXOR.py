@@ -2,7 +2,7 @@
 # ToraNova (chia_jason96@live.com)
 # cryptopals set 1 challenge 3
 
-from hex import hex2b
+from chex import hex2b
 #i am too lazy to hardcode a check function for printable/non-printable
 import string
 

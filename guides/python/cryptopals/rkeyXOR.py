@@ -2,7 +2,7 @@
 # ToraNova (chia_jason96@live.com)
 # cryptopals set 1 challenge 5
 
-from hex import hex2b, b2hex
+from chex import hex2b, b2hex
 from sbyteXOR import sbxbreak_english, evaltext_english
 import b64
 
