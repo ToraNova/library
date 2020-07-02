@@ -178,6 +178,7 @@ def sbxbreak_english(s, rlim = 10, method=2):
 
 
 if __name__ == '__main__':
+    # string break
     ts = 'test string'
     tk = 0xf0
     res = ts.encode('utf8')
@@ -186,13 +187,15 @@ if __name__ == '__main__':
     res = res.decode('utf8')
     print(res)
 
+    # byte break
     s = '1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'
     s = hex2b(s)
     res = sbxbreak_english(s, 5)
     for r in res:
         print(r)
-    #print(res)
+    print(res)
 
+    # file break
     print()
     with open('files/1hex-4.txt','r') as f:
         # for all lines

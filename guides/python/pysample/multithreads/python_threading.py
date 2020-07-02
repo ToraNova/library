@@ -35,4 +35,8 @@ if __name__ == "__main__":
 	thread1.start()
 	thread2.start()
 
+        # wait for threads to stop
+        thread1.join()
+        thread2.join()
+
 	print("Exiting Main Thread")
